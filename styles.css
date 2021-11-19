@@ -1,0 +1,166 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-height: 100vh;
+  padding-top: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-container {
+  display: flex;
+  background-color: rgba(128, 128, 128, 0.719);
+  border-radius: 15px;
+  width: 90vw;
+  height: 80vh;
+}
+
+.status {
+  width: 25%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status h3 {
+  text-align: center;
+  top: 0;
+  margin: auto;
+  color: white;
+  background-color: rgb(77, 72, 155);
+  margin: 0;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#add-btn {
+  padding: 0.5rem 1rem;
+  background-color: rgba(128, 128, 128, 0);
+  width: 78%;
+  font-size: 0.8em;
+  margin-bottom: 10px;
+  border: 2px solid rgb(33, 163, 33);
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#add-btn:hover {
+  background-color: rgb(33, 163, 33);
+}
+
+.todo {
+  display: flex;
+  position: relative;
+  background-color: rgb(230, 214, 125);
+  border-radius: 6px;
+  width: 95%;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 10px;
+  padding: 0.5rem 0.5rem;
+}
+
+.todo-content {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* background-color: brown; */
+  width: 88%;
+}
+
+.todo-remove {
+  width: 10%;
+  color: black;
+  display: inline;
+  cursor: pointer;
+}
+
+.todo-remove:hover {
+  color: red;
+}
+
+/* Modal Part */
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal {
+  width: 450px;
+  position: fixed;
+  top: -50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: top 0.3s ease-in-out;
+  border-radius: 10px;
+  z-index: 2;
+  background-color: #fff;
+}
+
+.modal.active {
+  top: 15%;
+}
+
+.modal .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem;
+  background-color: rgb(77, 72, 155);
+}
+
+.modal .body {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(22, 21, 21, 0.7);
+}
+
+#overlay.active {
+  display: block;
+}
+
+#todo-input {
+  width: 90%;
+  padding: 0.25rem;
+  outline: none;
+  border: 1px solid rgb(77, 72, 155);
+  border-radius: 5px;
+}
+
+#todo-submit {
+  width: 90%;
+  margin-top: 10px;
+  padding: 0.25rem;
+  border: 2px solid rgb(33, 163, 33);
+  border-radius: 5px;
+}
+
+#todo-submit:hover {
+  background-color: rgb(33, 163, 33);
+  cursor: pointer;
+}

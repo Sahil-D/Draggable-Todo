@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Todo</title>
+  </head>
+  <body>
+    <!-- modal part-->
+    <div class="modal" id="todo-form">
+      <div class="header">
+        <div class="title">Add Todo</div>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="body">
+        <input type="text" id="todo-input" />
+        <input type="submit" value="Add Todo" id="todo-submit" />
+      </div>
+    </div>
+
+    <!-- todo part-->
+    <div class="todo-container">
+      <div class="status" id="no-status">
+        <h3>No Status</h3>
+        <button id="add-btn" data-target-modal="#todo-form">+ Add Todo</button>
+        <div class="todo" draggable="true">
+          <div class="todo-content">anskjndkjandkjdnkjndjd</div>
+          <div class="todo-remove">&times;</div>
+        </div>
+      </div>
+      <div class="status" id="not-started">
+        <h3>Not Started</h3>
+      </div>
+      <div class="status" id="in-progress">
+        <h3>In Progress</h3>
+      </div>
+      <div class="status" id="completed">
+        <h3>Completed</h3>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
