@@ -2,6 +2,16 @@ const todos = document.querySelectorAll('.todo');
 const statuses = document.querySelectorAll('.status');
 let draggableTodo = null;
 
+var localTodosList = JSON.parse(localStorage.getItem('todos')) || [];
+
+localTodosList.forEach((todo) => {
+  createTodo(todo.content, todo.status);
+});
+
+function saveTodoListToLocalStorage(todoList) {
+  localStorage.setItem('todos', JSON.stringify(todoList));
+}
+
 // Drag event listeners
 
 todos.forEach((todo) => {
@@ -35,17 +45,30 @@ function dragOver(e) {
   // its default behaviour doesn't allow to drop the draggable
   e.preventDefault();
 }
+
 function dragEnter() {
   this.style.border = '1px dashed #ccc';
   this.style.borderTop = 'none';
 }
+
 function dragLeave() {
   this.style.border = 'none';
 }
+
 function dragDrop() {
+  // console.log('drop');
+  // console.log(this.id);
   this.appendChild(draggableTodo);
   this.style.border = 'none';
-  console.log('drop');
+
+  localTodosList = localTodosList.map((todo) => {
+    if (todo.content === draggableTodo.firstChild.innerHTML) {
+      todo = { ...todo, status: this.id };
+    }
+    return todo;
+  });
+
+  saveTodoListToLocalStorage(localTodosList);
 }
 
 // < ------------------------------------------------------------------------------>
@@ -82,19 +105,47 @@ window.onclick = (event) => {
 // Todo Creation
 
 const todoSubmit = document.getElementById('todo-submit');
+todoSubmit.addEventListener('click', addNewTodo);
 
-todoSubmit.addEventListener('click', createTodo);
+function addNewTodo() {
+  const todoValue = document.getElementById('todo-input');
+  if (todoValue.value == '') return;
 
-function createTodo() {
-  console.log('click');
+  if (todoAlreadyExist(todoValue.value)) {
+    alert('Todo already exists');
+    return;
+  }
+
+  createTodo(todoValue.value, 'no-status');
+
+  const new_id = localTodosList.length
+    ? localTodosList[localTodosList.length - 1].id + 1
+    : 0;
+
+  const newTodo = {
+    id: new_id,
+    content: todoValue.value,
+    status: 'no-status',
+  };
+  localTodosList.push(newTodo);
+  saveTodoListToLocalStorage(localTodosList);
+  todoValue.value = '';
+}
+
+function todoAlreadyExist(newTodoContent) {
+  const oldTodo = localTodosList.find(
+    (todo) => todo.content === newTodoContent
+  );
+  return oldTodo ? true : false;
+}
+
+function createTodo(content, todo_status) {
   const todoDiv = document.createElement('div');
   const todoDivContent = document.createElement('div');
   const todoDivRemove = document.createElement('div');
 
-  const todoValue = document.getElementById('todo-input');
-  if (todoValue.value == '') return;
-  const txt = document.createTextNode(todoValue.value);
-  todoValue.value = '';
+  const txt = document.createTextNode(content);
+
   todoDivContent.appendChild(txt);
   todoDivContent.classList.add('todo-content');
 
@@ -103,7 +154,7 @@ function createTodo() {
   todoDivRemove.classList.add('todo-remove');
 
   todoDivRemove.addEventListener('click', () => {
-    todoDivRemove.parentElement.style.display = 'none';
+    removeTodo(todoDivRemove);
   });
 
   todoDiv.appendChild(todoDivContent);
@@ -114,8 +165,8 @@ function createTodo() {
   todoDiv.addEventListener('dragstart', dragStart);
   todoDiv.addEventListener('dragend', dragEnd);
 
-  noStatusTodos = document.getElementById('no-status');
-  noStatusTodos.appendChild(todoDiv);
+  todoStatusTag = document.getElementById(todo_status);
+  todoStatusTag.appendChild(todoDiv);
 
   document.getElementById('todo-form').classList.remove('active');
   document.getElementById('overlay').classList.remove('active');
@@ -129,6 +180,17 @@ const removeButtons = document.querySelectorAll('.todo-remove');
 
 removeButtons.forEach((removeBtn) => {
   removeBtn.addEventListener('click', () => {
-    removeBtn.parentElement.style.display = 'none';
+    removeTodo(removeBtn);
   });
 });
+
+function removeTodo(removeBtn) {
+  removeBtn.parentElement.style.display = 'none';
+
+  const removedTodoContent = removeBtn.parentElement.firstChild.innerHTML;
+
+  localTodosList = localTodosList.filter(
+    (todo) => todo.content !== removedTodoContent
+  );
+  saveTodoListToLocalStorage(localTodosList);
+}
